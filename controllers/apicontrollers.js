@@ -20,16 +20,16 @@ exports.getIndex = async (req, res, next) => {
 }
 
 exports.getUrl = async (req, res, next) => {
-  const short_url = req.params.short_url;
+  const urlid = req.params.urlid;
   try {
-    const url = await Urls.findOne({shortenedUrl: short_url});
+    const url = await Urls.findOne({urlId: urlid});
     if (!url) {
       const error = new Error('URL not found');
       error.statusCode = 404;
       throw error;
     }
     res.status(200).json({
-      message: success,
+      message: 'success',
       url: url.originalUrl
     })
   } 
@@ -54,12 +54,14 @@ exports.postUrl = async (req, res, next) => {
     const shorturl = urlBase + '/' + urlid;
     const newUrl = new Urls({
       originalUrl: urlToShort,
-      shortenedUrl: shorturl
+      shortenedUrl: shorturl,
+      urlId: urlid
     })
     await newUrl.save();
     res.status(201).json({
       message: 'success',
-      url: newUrl.shortenedUrl
+      url: newUrl.shortenedUrl,
+      urlId: urlid
     })
   }
   catch(err) {

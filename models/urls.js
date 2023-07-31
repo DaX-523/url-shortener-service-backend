@@ -11,6 +11,11 @@ const urlSchema = new Schema({
     type: String,
     required: true,
     unique: true
+  },
+  urlId: {
+    type: String,
+    required: true,
+    unique: true
   }
 })
 
