@@ -30,7 +30,7 @@ exports.getUrl = async (req, res, next) => {
     }
     res.status(200).json({
       message: 'success',
-      url: url.originalUrl
+      url: url
     })
   } 
   catch(err) {
@@ -48,7 +48,7 @@ exports.postUrl = async (req, res, next) => {
   try {
     const url = await Urls.findOne({originalUrl: urlToShort})
     if (url) {
-      return res.status(200).json({message: 'success', url: url.originalUrl})
+      return res.status(200).json({newUrl: false, url: url})
     }
     const urlid = nanoid.nanoid()
     const shorturl = urlBase + '/' + urlid;
@@ -58,10 +58,10 @@ exports.postUrl = async (req, res, next) => {
       urlId: urlid
     })
     await newUrl.save();
+    console.log(newUrl)
     res.status(201).json({
-      message: 'success',
-      url: newUrl.shortenedUrl,
-      urlId: urlid
+      newUrl: true,
+      url: newUrl
     })
   }
   catch(err) {
